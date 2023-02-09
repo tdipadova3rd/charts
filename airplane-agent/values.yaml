@@ -82,6 +82,13 @@ serviceAccount:
   create: true
   annotations: {}
 
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    memory: 256Mi
+
 podSecurityContext: {}
 
 securityContext: {}
