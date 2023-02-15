@@ -60,6 +60,10 @@ airplane:
   # default service account in the runNamespace.
   taskServiceAccountName: ""
 
+  # Pod and container security contexts for task pods spun up by the agent.
+  taskPodSecurityContext: {}
+  taskSecurityContext: {}
+
   # Set to true if you're running inside AWS and want to use ECR-sourced public
   # images. This can improve performance and may reduce networking costs.
   useECRPublicImages: false
