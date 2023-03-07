@@ -1,7 +1,8 @@
 {{- if .Values.rbac.create -}}
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
+  namespace: {{ .Values.airplane.runNamespace }}
   name: {{ include "kubernetes_agent.fullname" . }}
   labels: {{- include "kubernetes_agent.labels" . | nindent 4 }}
 rules:
