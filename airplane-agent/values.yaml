@@ -71,6 +71,10 @@ airplane:
   # For development purposes only.
   debugMode: false
 
+  # Extra environment variables to apply to all agent and task containers. Useful
+  # for setting things like HTTP_PROXY.
+  extraEnvVars: {}
+
 image:
   repository: us-docker.pkg.dev/airplane-prod/public/agentv2
   pullPolicy: Always
@@ -114,6 +118,8 @@ tolerations: []
 affinity: {}
 
 extraLabels: {}
+
+enableHealthProbes: true
 
 sentry:
   dsn: ""

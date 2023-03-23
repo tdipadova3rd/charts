@@ -113,10 +113,19 @@ spec:
               value: '{{ toJson .Values.airplane.taskPodSecurityContext }}'
             - name: AP_K8S_CONTAINER_SECURITY_CONTEXT
               value: '{{ toJson .Values.airplane.taskSecurityContext }}'
+            {{- if .Values.airplane.extraEnvVars }}
+            - name: AP_EXTRA_ENV_VARS
+              value: '{{ toJson .Values.airplane.extraEnvVars }}'
+            {{- range $key, $val := .Values.airplane.extraEnvVars }}
+            - name: '{{ $key }}'
+              value: '{{ $val }}'
+            {{- end}}
+            {{- end}}
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
+          {{- if .Values.enableHealthProbes }}
           livenessProbe:
             httpGet:
               path: /healthz
@@ -125,6 +134,7 @@ spec:
             httpGet:
               path: /healthz
               port: http
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
