@@ -75,6 +75,11 @@ airplane:
   # for setting things like HTTP_PROXY.
   extraEnvVars: {}
 
+  # Configuration for remote observability. This allows Airplane to better debug errors
+  # and performance regressions in self-hosted agents.
+  allowRemoteObservability: true
+  otelCollectorURL: https://otel-collector.airplane.dev
+
 image:
   repository: us-docker.pkg.dev/airplane-prod/public/agentv2
   pullPolicy: Always

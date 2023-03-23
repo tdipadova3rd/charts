@@ -113,6 +113,12 @@ spec:
               value: '{{ toJson .Values.airplane.taskPodSecurityContext }}'
             - name: AP_K8S_CONTAINER_SECURITY_CONTEXT
               value: '{{ toJson .Values.airplane.taskSecurityContext }}'
+            - name: AP_ALLOW_REMOTE_OBSERVABILITY
+              value: '{{ .Values.airplane.allowRemoteObservability }}'
+            - name: AP_OTEL_COLLECTOR_URL
+              value: '{{ .Values.airplane.otelCollectorURL }}'
+            - name: AP_OTEL_COLLECTOR_RUNBROKER_URL
+              value: '{{ .Values.airplane.otelCollectorURL }}'
             {{- if .Values.airplane.extraEnvVars }}
             - name: AP_EXTRA_ENV_VARS
               value: '{{ toJson .Values.airplane.extraEnvVars }}'
