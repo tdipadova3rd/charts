@@ -80,6 +80,10 @@ airplane:
   allowRemoteObservability: true
   otelCollectorURL: https://otel-collector.airplane.dev
 
+  # Whether to log task output to stdout/stderr so it can be picked up
+  # by your own logging systems.
+  logTaskOutput: false
+
 image:
   repository: us-docker.pkg.dev/airplane-prod/public/agentv2
   pullPolicy: Always

@@ -119,6 +119,8 @@ spec:
               value: '{{ .Values.airplane.otelCollectorURL }}'
             - name: AP_OTEL_COLLECTOR_RUNBROKER_URL
               value: '{{ .Values.airplane.otelCollectorURL }}'
+            - name: AP_LOG_TASK_OUTPUT
+              value: '{{ .Values.airplane.logTaskOutput }}'
             {{- if .Values.airplane.extraEnvVars }}
             - name: AP_EXTRA_ENV_VARS
               value: '{{ toJson .Values.airplane.extraEnvVars }}'
