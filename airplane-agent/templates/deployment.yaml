@@ -121,6 +121,14 @@ spec:
               value: '{{ .Values.airplane.otelCollectorURL }}'
             - name: AP_LOG_TASK_OUTPUT
               value: '{{ .Values.airplane.logTaskOutput }}'
+            - name: AP_DEFAULT_CPU
+              value: '{{ .Values.airplane.defaultTaskResources.requests.cpu }}'
+            - name: AP_DEFAULT_MEMORY
+              value: '{{ .Values.airplane.defaultTaskResources.requests.memory }}'
+            - name: AP_K8S_MIN_CPU_LIMIT
+              value: '{{ .Values.airplane.defaultTaskResources.limits.cpu }}'
+            - name: AP_K8S_MIN_MEMORY_LIMIT
+              value: '{{ .Values.airplane.defaultTaskResources.limits.memory  }}'
             {{- if .Values.airplane.extraEnvVars }}
             - name: AP_EXTRA_ENV_VARS
               value: '{{ toJson .Values.airplane.extraEnvVars }}'
