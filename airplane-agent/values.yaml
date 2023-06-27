@@ -94,6 +94,28 @@ airplane:
       cpu: 1000m
       memory: 2Gi
 
+  # Settings for self-hosted storage (https://docs.airplane.dev/self-hosting/storage).
+  #
+  # NOTE: Self-hosted storage support for Kubernetes is still experimental. Please
+  # talk to support@airplane.dev before enabling.
+  storage:
+    enabled: false
+    mode: gke
+
+    # GCP settings
+    gcpIPAddressName: ""
+    gcsBucketName: ""
+
+    # AWS settings
+    s3BucketName: ""
+
+    # Common settings
+    redisHost: ""
+    zoneName: "Storage GKE test"
+    zoneSlug: "gketest"
+    domain: "d.airplane.sh"
+    jwtPublicKey: "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUF1MGNBdTVmNnFrbWw0MUZxT01hcAo5cmNiZnNwOEJ3MFZVMlRra2pxTDFEOWYrYmF6TEdvcDJSYThWTTcxKzlPamFiNXpnWWZYOTdtWiszUmVUMTNQCkJ5clhRR1BuQ1VoVG9JOEVBdjA2NjJMbG83SzFHYm9TUjF6TjJoMWlNaXAwRFJQSUp0REJNL3QyTUxsSUxxRUMKbTlDdmNkTTg0dXdQc201VDdQV014Z0dYUG9pRnhwR1h5T2w1eCtjOGRaL1lHWU13V3A1eWNnRTVCb1lOK05SaAp0dE94T2NGS0JMbGgvaFNNeWUwaEV5cjlsMVYzVFovQW5xaUxWRlZsYUZ2MmJxbzNacnZUSG5rZHZQaVdkSDMxCmhvWWJJZDRmcHAreWFsNURtZmJqSklPQWFUN2R2UVRqZE9LUzQreW9TdGp2VlY2ZGdxVWtiK1dlcEg3Sk9UWUcKVVNhakRLSkMrQll3K2U5bE5XTldXRU4rc3NvaHBEb3BzaW12MTBKQUI1SFRUU1JBVXFhbzRSRndpVjhiRmFPUQpISFBqUWNBOWlSamluNDN3VDhsVnNNK1hTOFRLZVB6WGF2K3dtWXl1T3dNWTZ6Z0ppU1hZSG5EaDgwTWt0WmlkCkNBQk9BK0I3RWI0dHE1cXlPNzNnNndxTGZIeDVrblYyNjU1N2JZVjdkSUVsSUJiNnVsdnM5L1doV2VnNFhlRVcKdHh3M2gwNC9PWHZ6VlV2c0dVRXdTVmhjbzFyNU1sOWxTMHVrN0U2cG5aRTljSkI2T1VuMHVqSW9KQW91UDhwQwpaTDBNWkRlVys2ZThKV0Fqc043bjFjbUdhRC9jdER2N2E2eHNvbWsyTjVXQzE0U1lLUGVSTndTb05pOE5icENOCjJLZU5zTGlybXlqZEY5c29jVTFqVlQwQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
+
 image:
   repository: us-docker.pkg.dev/airplane-prod/public/agentv2
   pullPolicy: Always

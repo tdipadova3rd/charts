@@ -9,6 +9,11 @@ spec:
   selector:
     matchLabels:
       {{- include "kubernetes_agent.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -129,18 +134,48 @@ spec:
               value: '{{ .Values.airplane.defaultTaskResources.limits.cpu }}'
             - name: AP_K8S_MIN_MEMORY_LIMIT
               value: '{{ .Values.airplane.defaultTaskResources.limits.memory  }}'
+            {{- if .Values.airplane.storage.enabled }}
+            - name: AP_AGENT_STORAGE_ENABLED
+              value: "true"
+            - name: AP_AGENT_STORAGE_TEAM_ID
+              value: '{{ .Values.airplane.teamID }}'
+            - name: AP_AGENT_STORAGE_ZONE_SLUG
+              value: '{{ .Values.airplane.storage.zoneSlug }}'
+            - name: AP_AGENT_STORAGE_ZONE_NAME
+              value: '{{ .Values.airplane.storage.zoneName }}'
+            - name: AP_AGENT_STORAGE_INTERNAL_HOST
+              value: 'http://airplane-agent-internal.{{ .Release.Namespace }}:2189'
+            - name: AP_AGENT_STORAGE_EXTERNAL_URL
+              value: 'https://{{ .Values.airplane.storage.zoneSlug }}.{{ .Values.airplane.teamID }}.{{ .Values.airplane.storage.domain }}'
+            - name: AP_AGENT_STORAGE_JWT_PUBLIC_KEY
+              value: '{{ .Values.airplane.storage.jwtPublicKey }}'
+            - name: AP_AGENT_STORAGE_S3_AGENT_STORAGE_BUCKET
+              value: '{{ .Values.airplane.storage.s3BucketName }}'
+            - name: AP_AGENT_STORAGE_GCS_AGENT_STORAGE_BUCKET
+              value: '{{ .Values.airplane.storage.gcsBucketName }}'
+            - name: AP_AGENT_STORAGE_REDIS_HOST
+              value: '{{ .Values.airplane.storage.redisHost }}'
+            {{- end }}
             {{- if .Values.airplane.extraEnvVars }}
             - name: AP_EXTRA_ENV_VARS
               value: '{{ toJson .Values.airplane.extraEnvVars }}'
             {{- range $key, $val := .Values.airplane.extraEnvVars }}
             - name: '{{ $key }}'
               value: '{{ $val }}'
-            {{- end}}
-            {{- end}}
+            {{- end }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
+            {{- if .Values.airplane.storage.enabled }}
+            - name: internal
+              containerPort: 2189
+              protocol: TCP
+            - name: external
+              containerPort: 2190
+              protocol: TCP
+            {{- end }}
           {{- if .Values.enableHealthProbes }}
           livenessProbe:
             httpGet:

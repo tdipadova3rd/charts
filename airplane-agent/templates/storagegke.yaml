@@ -1,0 +1,80 @@
+{{- if (and .Values.airplane.storage.enabled (eq .Values.airplane.storage.mode "gke")) -}}
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: airplane-agent-frontend
+spec:
+  redirectToHttps:
+    enabled: true
+    responseCodeName: "PERMANENT_REDIRECT"
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: airplane-agent-backend
+spec:
+  connectionDraining:
+    drainingTimeoutSec: 90
+  healthCheck:
+    checkIntervalSec: 5
+    healthyThreshold: 1
+    port: 2190
+    requestPath: /healthz
+    timeoutSec: 3
+    type: HTTP
+    unhealthyThreshold: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: airplane-agent-internal
+spec:
+  ports:
+  - port: 2189
+    protocol: TCP
+    targetPort: 2189
+  selector:
+    {{- include "kubernetes_agent.selectorLabels" . | nindent 4 }}
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: airplane-agent-external
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+    cloud.google.com/backend-config: '{"ports": {"external": "airplane-agent-backend"}}'
+spec:
+  ports:
+  - name: external
+    port: 2190
+    protocol: TCP
+    targetPort: 2190
+  selector:
+    {{- include "kubernetes_agent.selectorLabels" . | nindent 4 }}
+  type: ClusterIP
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: airplane-managed-cert
+spec:
+  domains:
+    - '{{ .Values.airplane.storage.zoneSlug }}.{{ .Values.airplane.teamID }}.{{ .Values.airplane.storage.domain }}'
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: airplane-agent-external
+  annotations:
+    networking.gke.io/v1beta1.FrontendConfig: airplane-agent-frontend
+    kubernetes.io/ingress.global-static-ip-name: '{{ .Values.airplane.storage.gcpIPAddressName }}'
+    networking.gke.io/managed-certificates: airplane-managed-cert
+    kubernetes.io/ingress.class: "gce"
+spec:
+  defaultBackend:
+    service:
+      name: airplane-agent-external
+      port:
+        number: 2190
+{{- end -}}
