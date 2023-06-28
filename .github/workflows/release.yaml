@@ -25,13 +25,15 @@ jobs:
       - name: Check version
         run: |
           tag="${{github.ref_name}}"
-          tag=${tag:1}
 
-          chart_version=$(cat ./airplane-agent/chart.yaml | grep version)
-          if [[ "$chart_version" == *" "${tag} ]]; then
-            echo "Version matches"
+          # Remove "v" prefix and add quotes
+          tag=\"${tag:1}\"
+
+          chart_version=$(cat ./airplane-agent/Chart.yaml | grep version)
+          if [[ "$chart_version" == *${tag} ]]; then
+            echo "Versions match"
           else
-            echo "Version in chart.yaml does not match tag, not releasing"
+            echo "Version in chart.yaml ($chart_version) does not match tag ($tag), not releasing"
             exit 1
           fi
 
