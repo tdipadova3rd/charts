@@ -23,7 +23,7 @@ jobs:
           version: v3.12.1
 
       - name: Check version
-        run:
+        run: |
           tag="${{github.ref_name}}"
           tag=${tag:1}
 
