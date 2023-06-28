@@ -60,7 +60,7 @@ metadata:
   name: airplane-managed-cert
 spec:
   domains:
-    - '{{ .Values.airplane.storage.zoneSlug }}.{{ .Values.airplane.teamID }}.{{ .Values.airplane.storage.domain }}'
+    - "{{ .Values.airplane.storage.zoneSlug }}.{{ .Values.airplane.teamID }}.{{ .Values.airplane.storage.domain }}"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -68,7 +68,7 @@ metadata:
   name: airplane-agent-external
   annotations:
     networking.gke.io/v1beta1.FrontendConfig: airplane-agent-frontend
-    kubernetes.io/ingress.global-static-ip-name: '{{ .Values.airplane.storage.gcpIPAddressName }}'
+    kubernetes.io/ingress.global-static-ip-name: "{{ .Values.airplane.storage.gcpIPAddressName }}"
     networking.gke.io/managed-certificates: airplane-managed-cert
     kubernetes.io/ingress.class: "gce"
 spec:

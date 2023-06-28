@@ -1,9 +1,9 @@
-name: Release Charts
+name: Release
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - '*'
 
 jobs:
   release:
@@ -20,7 +20,20 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v1
         with:
-          version: v3.4.0
+          version: v3.12.1
+
+      - name: Check version
+        run:
+          tag="${{github.ref_name}}"
+          tag=${tag:1}
+
+          chart_version=$(cat ./airplane-agent/chart.yaml | grep version)
+          if [[ "$chart_version" == *" "${tag} ]]; then
+            echo "Version matches"
+          else
+            echo "Version in chart.yaml does not match tag, not releasing"
+            exit 1
+          fi
 
       - name: Push new release
         run: |

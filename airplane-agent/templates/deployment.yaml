@@ -119,48 +119,48 @@ spec:
             - name: AP_K8S_CONTAINER_SECURITY_CONTEXT
               value: '{{ toJson .Values.airplane.taskSecurityContext }}'
             - name: AP_ALLOW_REMOTE_OBSERVABILITY
-              value: '{{ .Values.airplane.allowRemoteObservability }}'
+              value: "{{ .Values.airplane.allowRemoteObservability }}"
             - name: AP_OTEL_COLLECTOR_URL
-              value: '{{ .Values.airplane.otelCollectorURL }}'
+              value: "{{ .Values.airplane.otelCollectorURL }}"
             - name: AP_OTEL_COLLECTOR_RUNBROKER_URL
-              value: '{{ .Values.airplane.otelCollectorURL }}'
+              value: "{{ .Values.airplane.otelCollectorURL }}"
             - name: AP_LOG_TASK_OUTPUT
-              value: '{{ .Values.airplane.logTaskOutput }}'
+              value: "{{ .Values.airplane.logTaskOutput }}"
             - name: AP_DEFAULT_CPU
-              value: '{{ .Values.airplane.defaultTaskResources.requests.cpu }}'
+              value: "{{ .Values.airplane.defaultTaskResources.requests.cpu }}"
             - name: AP_DEFAULT_MEMORY
-              value: '{{ .Values.airplane.defaultTaskResources.requests.memory }}'
+              value: "{{ .Values.airplane.defaultTaskResources.requests.memory }}"
             - name: AP_K8S_MIN_CPU_LIMIT
-              value: '{{ .Values.airplane.defaultTaskResources.limits.cpu }}'
+              value: "{{ .Values.airplane.defaultTaskResources.limits.cpu }}"
             - name: AP_K8S_MIN_MEMORY_LIMIT
-              value: '{{ .Values.airplane.defaultTaskResources.limits.memory  }}'
+              value: "{{ .Values.airplane.defaultTaskResources.limits.memory  }}"
             {{- if .Values.airplane.storage.enabled }}
             - name: AP_AGENT_STORAGE_ENABLED
               value: "true"
             - name: AP_AGENT_STORAGE_TEAM_ID
-              value: '{{ .Values.airplane.teamID }}'
+              value: "{{ .Values.airplane.teamID }}"
             - name: AP_AGENT_STORAGE_ZONE_SLUG
-              value: '{{ .Values.airplane.storage.zoneSlug }}'
+              value: "{{ .Values.airplane.storage.zoneSlug }}"
             - name: AP_AGENT_STORAGE_ZONE_NAME
-              value: '{{ .Values.airplane.storage.zoneName }}'
+              value: "{{ .Values.airplane.storage.zoneName }}"
             - name: AP_AGENT_STORAGE_INTERNAL_HOST
-              value: 'http://airplane-agent-internal.{{ .Release.Namespace }}:2189'
+              value: "http://airplane-agent-internal.{{ .Release.Namespace }}:2189"
             - name: AP_AGENT_STORAGE_EXTERNAL_URL
-              value: 'https://{{ .Values.airplane.storage.zoneSlug }}.{{ .Values.airplane.teamID }}.{{ .Values.airplane.storage.domain }}'
+              value: "https://{{ .Values.airplane.storage.zoneSlug }}.{{ .Values.airplane.teamID }}.{{ .Values.airplane.storage.domain }}"
             - name: AP_AGENT_STORAGE_JWT_PUBLIC_KEY
-              value: '{{ .Values.airplane.storage.jwtPublicKey }}'
+              value: "{{ .Values.airplane.storage.jwtPublicKey }}"
             - name: AP_AGENT_STORAGE_S3_AGENT_STORAGE_BUCKET
-              value: '{{ .Values.airplane.storage.s3BucketName }}'
+              value: "{{ .Values.airplane.storage.s3BucketName }}"
             - name: AP_AGENT_STORAGE_GCS_AGENT_STORAGE_BUCKET
-              value: '{{ .Values.airplane.storage.gcsBucketName }}'
+              value: "{{ .Values.airplane.storage.gcsBucketName }}"
             - name: AP_AGENT_STORAGE_REDIS_HOST
-              value: '{{ .Values.airplane.storage.redisHost }}'
+              value: "{{ .Values.airplane.storage.redisHost }}"
             {{- end }}
             {{- if .Values.airplane.extraEnvVars }}
             - name: AP_EXTRA_ENV_VARS
               value: '{{ toJson .Values.airplane.extraEnvVars }}'
             {{- range $key, $val := .Values.airplane.extraEnvVars }}
-            - name: '{{ $key }}'
+            - name: "{{ $key }}"
               value: '{{ $val }}'
             {{- end }}
             {{- end }}
