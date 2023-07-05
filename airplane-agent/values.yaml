@@ -1,66 +1,77 @@
-replicaCount: 3
-
 airplane:
-  # Specify either apiToken or apiTokenSecret, not both
+  # Set your Airplane API token either directly in `apiToken` or in the secret referenced by
+  # `apiTokenSecret`, but not both (required).
   apiToken: ""
   apiTokenSecret:
     name: ""
     key: ""
 
-  # Specify either teamID or teamIDSecret, not both
+  # Set your team ID (required).
   teamID: ""
-  teamIDSecret:
-    name: ""
-    key: ""
 
-  agentLabels: {}
+  # The namespace that your tasks will run in. This is usually set to the same namespace
+  # that the chart is deployed in.
   runNamespace: default
+
+  # Whether to automatically upgrade the agent each time a new version is released.
+  # It's recommended to keep this set to true. If false, you'll need to manually
+  # cycle the agent pods on a regular basis to get updates and bug fixes.
+  autoUpgrade: true
+
+  # Whether to log task output to stdout/stderr so it can be picked up
+  # by your own logging systems.
+  logTaskOutput: false
+
+  # Whether to enable debug logging.
+  debugMode: false
+
+  # Whether to enable sending error logs to Airplane. This allows Airplane to better
+  # debug errors and performance regressions in self-hosted agents, and it's recommended
+  # to keep it on.
+  allowRemoteObservability: true
+
+  # The environment to restrict this agent to. Leave blank to allow the agent
+  # to run tasks from all environments.
   envSlug: ""
 
-  apiHost: https://api.airplane.dev
-  temporalHost: temporal-api.airplane.dev:443
-  mtaAgent: false
+  # Labels that will be used to identify the agent and restrict which tasks
+  # can run on it.
+  agentLabels: {}
+
+  # Runtime class for task runner pods spun up by the agent.
   runtimeClass: ""
 
-  # Node selectors to use when scheduling runs.
+  # Node selectors to use when scheduling task runner pods.
+  #
   # Accepts a map of key-value pairs where keys are node labels and values
   # are the expected value for that label. For example:
-  # - my_node_label: my_expected_label_value
+  # - my_node_label: my_expected_label_value.
   nodeSelector: {}
 
-  # Tolerations to use when scheduling runs. Each toleration will have an operator
-  # of "Equal" and an effect of "NoSchedule".
+  # Tolerations to use when scheduling task runner pods. Each toleration will have an
+  # operator of "Equal" and an effect of "NoSchedule".
+  #
   # Accepts a map of key-value pairs. For example:
   # - my_toleration_key: my_toleration_value
   tolerations: {}
 
-  # Deprecated. Use "dnsPolicy: ClusterFirst" instead.
-  clusterFirstDNS: false
-
-  # The DNS policy to apply to runs.
+  # The DNS policy to apply to task runners.
   #
-  # Accepts any of "Default", "ClusterFirst", "ClusterFirstWithHostNet", and "None".
   # See: https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy.
-  #
-  # NOTE: If your tasks need to communicate with other services in your cluster, then you probably
-  # want "ClusterFirst" here. We're setting "Default" for backwards compatibility reasons, but this
-  # will be changed in the next major version of this chart.
-  dnsPolicy: Default
-
-  serviceJWTSecret:
-    name: ""
-    key: ""
-  autoUpgrade: true
+  dnsPolicy: ClusterFirst
 
   # A random identifier, such as a UUIDv4, that uniquely identifies this agent within your team.
-  # By default, this is regenerated every time the chart runs but can be overridden to keep it consistent.
+  #
+  # By default, this is generated from a hash of your team ID, chart name, namespace, envSlug,
+  # and agentLabels, but it can be overridden if you have multiple agent sets with the same
+  # chart values.
   randomLockID: ""
 
   # The name of the service account to run task pods under. If unset, they'll use the
-  # default service account in the runNamespace.
+  # default service account in the `runNamespace` specified above.
   taskServiceAccountName: ""
 
-  # Pod and container security contexts for task pods spun up by the agent.
+  # Pod and container security contexts for task runners spun up by the agent.
   taskPodSecurityContext: {}
   taskSecurityContext: {}
 
@@ -68,21 +79,9 @@ airplane:
   # images. This can improve performance and may reduce networking costs.
   useECRPublicImages: false
 
-  # For development purposes only.
-  debugMode: false
-
   # Extra environment variables to apply to all agent and task containers. Useful
   # for setting things like HTTP_PROXY.
   extraEnvVars: {}
-
-  # Configuration for remote observability. This allows Airplane to better debug errors
-  # and performance regressions in self-hosted agents.
-  allowRemoteObservability: true
-  otelCollectorURL: https://otel-collector.airplane.dev
-
-  # Whether to log task output to stdout/stderr so it can be picked up
-  # by your own logging systems.
-  logTaskOutput: false
 
   # Default CPU and memory requests and limits for task runners spun up by
   # the agent.
@@ -116,21 +115,41 @@ airplane:
     domain: "d.airplane.sh"
     jwtPublicKey: "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUF1MGNBdTVmNnFrbWw0MUZxT01hcAo5cmNiZnNwOEJ3MFZVMlRra2pxTDFEOWYrYmF6TEdvcDJSYThWTTcxKzlPamFiNXpnWWZYOTdtWiszUmVUMTNQCkJ5clhRR1BuQ1VoVG9JOEVBdjA2NjJMbG83SzFHYm9TUjF6TjJoMWlNaXAwRFJQSUp0REJNL3QyTUxsSUxxRUMKbTlDdmNkTTg0dXdQc201VDdQV014Z0dYUG9pRnhwR1h5T2w1eCtjOGRaL1lHWU13V3A1eWNnRTVCb1lOK05SaAp0dE94T2NGS0JMbGgvaFNNeWUwaEV5cjlsMVYzVFovQW5xaUxWRlZsYUZ2MmJxbzNacnZUSG5rZHZQaVdkSDMxCmhvWWJJZDRmcHAreWFsNURtZmJqSklPQWFUN2R2UVRqZE9LUzQreW9TdGp2VlY2ZGdxVWtiK1dlcEg3Sk9UWUcKVVNhakRLSkMrQll3K2U5bE5XTldXRU4rc3NvaHBEb3BzaW12MTBKQUI1SFRUU1JBVXFhbzRSRndpVjhiRmFPUQpISFBqUWNBOWlSamluNDN3VDhsVnNNK1hTOFRLZVB6WGF2K3dtWXl1T3dNWTZ6Z0ppU1hZSG5EaDgwTWt0WmlkCkNBQk9BK0I3RWI0dHE1cXlPNzNnNndxTGZIeDVrblYyNjU1N2JZVjdkSUVsSUJiNnVsdnM5L1doV2VnNFhlRVcKdHh3M2gwNC9PWHZ6VlV2c0dVRXdTVmhjbzFyNU1sOWxTMHVrN0U2cG5aRTljSkI2T1VuMHVqSW9KQW91UDhwQwpaTDBNWkRlVys2ZThKV0Fqc043bjFjbUdhRC9jdER2N2E2eHNvbWsyTjVXQzE0U1lLUGVSTndTb05pOE5icENOCjJLZU5zTGlybXlqZEY5c29jVTFqVlQwQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
 
+  # These are for development purposes only. Please don't change them without reaching out
+  # to support@airplane.dev first.
+  apiHost: https://api.airplane.dev
+  temporalHost: temporal-api.airplane.dev:443
+  otelCollectorURL: https://otel-collector.airplane.dev
+  mtaAgent: false
+  serviceJWTSecret:
+    name: ""
+    key: ""
+
+# Number of agent replicas to run.
+replicaCount: 3
+
+# Image to use for the agent.
 image:
   repository: us-docker.pkg.dev/airplane-prod/public/agentv2
   pullPolicy: Always
-
 imagePullSecrets: []
+
+# Settings to override the chart name.
 nameOverride: ""
 fullnameOverride: ""
 
+# Whether to create RBAC rules that allow the agent to create pods and secrets
+# in the runner namespace. This should be kept as-is in most cases.
 rbac:
   create: true
 
+# Whether to create a service account for the agent. This should be kept as-is in
+# most cases.
 serviceAccount:
   create: true
   annotations: {}
 
+# Resource requests and limits for the agent pods.
 resources:
   requests:
     cpu: 250m
@@ -138,17 +157,19 @@ resources:
   limits:
     memory: 256Mi
 
+# Pod and container security contexts for the agent.
 podSecurityContext: {}
-
 securityContext: {}
 
 # Node selectors to use when scheduling agents.
+#
 # Accepts a map of key-value pairs where keys are node labels and values
 # are the expected value for that label. For example:
 # - my_node_label: my_expected_label_value
 nodeSelector: {}
 
 # Tolerations to use when scheduling agents.
+#
 # Accepts a list of tolerations. For example:
 # - key: "my_toleration_key"
 #   operator: "Equal"
@@ -156,12 +177,16 @@ nodeSelector: {}
 #   effect: "NoSchedule"
 tolerations: []
 
+# Affinity settings for the agent pods.
 affinity: {}
 
+# Extra labels to apply to the agent pods.
 extraLabels: {}
 
+# Whether to enable liveness and readiness checks for the agent pods.
 enableHealthProbes: true
 
+# Optional settings for sending agent errors to Sentry.
 sentry:
   dsn: ""
   environment: ""

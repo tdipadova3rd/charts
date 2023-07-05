@@ -35,4 +35,5 @@ jobs:
             --set airplane.extraEnvVars.KEY3='{"key1": "value1"}' \
             --set airplane.storage.enabled=true \
             --set airplane.taskPodSecurityContext.key=value \
-            --set airplane.taskSecurityContext.key=value
+            --set airplane.taskSecurityContext.key=value \
+            --set airplane.agentLabels.key1=value1

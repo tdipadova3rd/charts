@@ -1,3 +1,6 @@
+{{- $_ := required "airplane.apiToken is a required value" .Values.airplane.apiToken }}
+{{- $_ := required "airplane.teamID is a required value" .Values.airplane.teamID }}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -45,15 +48,7 @@ spec:
               value: ""
               {{- end }}
             - name: AP_TEAM_ID
-              {{- if .Values.airplane.teamID }}
               value: "{{ .Values.airplane.teamID }}"
-              {{- else if .Values.airplane.teamIDSecret.name }}
-              valueFrom:
-                secretKeyRef:
-                  {{- toYaml .Values.airplane.teamIDSecret | nindent 18 }}
-              {{- else }}
-              value: ""
-              {{- end }}
             - name: AP_API_HOST
               value: "{{ .Values.airplane.apiHost }}"
             - name: AP_DRIVER
@@ -70,6 +65,8 @@ spec:
               value: "airplane_installer:helm
                 {{- range $key, $val := .Values.airplane.agentLabels }} {{ $key }}:{{ $val }}
                 {{- end }}"
+            - name: AP_INSTALLED_BY
+              value: "github.com/airplanedev/charts/airplane-agent?ref={{ .Chart.Version }}"
             - name: AP_MTA_AGENT
               value: "{{ .Values.airplane.mtaAgent | toString }}"
             - name: AP_PORT
@@ -96,14 +93,12 @@ spec:
               {{- if .Values.airplane.randomLockID }}
               value: "helm-{{ .Values.airplane.randomLockID }}"
               {{- else }}
-              value: "helm-{{ uuidv4 }}"
+              value: "helm-{{ sha1sum (printf "%s-%s-%s-%s-%s-%s" .Values.airplane.teamID .Release.Namespace .Values.airplane.runNamespace .Release.Name .Values.airplane.envSlug (toJson .Values.airplane.agentLabels)) }}"
               {{- end }}
             - name: AP_ENV_SLUG
               value: "{{ .Values.airplane.envSlug }}"
             - name: AP_K8S_DNS_POLICY
               value: "{{ .Values.airplane.dnsPolicy }}"
-            - name: AP_K8S_CLUSTER_FIRST_DNS
-              value: "{{ .Values.airplane.clusterFirstDNS | toString }}"
             - name: AP_RUNNER_TEMPORAL_HOST
               value: "{{ .Values.airplane.temporalHost }}"
             - name: AP_K8S_SERVICE_ACCOUNT_NAME
