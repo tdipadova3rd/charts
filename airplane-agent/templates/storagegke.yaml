@@ -3,6 +3,8 @@ apiVersion: networking.gke.io/v1beta1
 kind: FrontendConfig
 metadata:
   name: airplane-agent-frontend
+  labels:
+    {{- include "kubernetes_agent.labels" . | nindent 4 }}
 spec:
   redirectToHttps:
     enabled: true
@@ -12,6 +14,8 @@ apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
   name: airplane-agent-backend
+  labels:
+    {{- include "kubernetes_agent.labels" . | nindent 4 }}
 spec:
   connectionDraining:
     drainingTimeoutSec: 90
@@ -28,6 +32,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: airplane-agent-internal
+  labels:
+    {{- include "kubernetes_agent.labels" . | nindent 4 }}
 spec:
   ports:
   - port: 2189
@@ -41,6 +47,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: airplane-agent-external
+  labels:
+    {{- include "kubernetes_agent.labels" . | nindent 4 }}
   annotations:
     cloud.google.com/neg: '{"ingress": true}'
     cloud.google.com/backend-config: '{"ports": {"external": "airplane-agent-backend"}}'
@@ -58,6 +66,8 @@ apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
   name: airplane-managed-cert
+  labels:
+    {{- include "kubernetes_agent.labels" . | nindent 4 }}
 spec:
   domains:
     - "{{ .Values.airplane.storage.zoneSlug }}.{{ .Values.airplane.teamID }}.{{ .Values.airplane.storage.domain }}"
@@ -66,6 +76,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: airplane-agent-external
+  labels:
+    {{- include "kubernetes_agent.labels" . | nindent 4 }}
   annotations:
     networking.gke.io/v1beta1.FrontendConfig: airplane-agent-frontend
     kubernetes.io/ingress.global-static-ip-name: "{{ .Values.airplane.storage.gcpIPAddressName }}"

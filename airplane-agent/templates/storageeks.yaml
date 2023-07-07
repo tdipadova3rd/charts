@@ -1,0 +1,40 @@
+{{- if (and .Values.airplane.storage.enabled (eq .Values.airplane.storage.mode "eks")) -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: airplane-agent-internal
+  labels:
+    {{- include "kubernetes_agent.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: 2189
+      protocol: TCP
+      targetPort: 2189
+  selector: {{- include "kubernetes_agent.selectorLabels" . | nindent 4 }}
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: airplane-agent-external
+  labels:
+    {{- include "kubernetes_agent.labels" . | nindent 4 }}
+spec:
+  ports:
+    - name: external
+      port: 2190
+      protocol: TCP
+      targetPort: 2190
+  selector: {{- include "kubernetes_agent.selectorLabels" . | nindent 4 }}
+  type: ClusterIP
+---
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: airplane-agent-external
+spec:
+  serviceRef:
+    name: airplane-agent-external
+    port: 2190
+  targetGroupARN: "{{ .Values.airplane.storage.awsTargetGroupARN }}"
+{{- end -}}

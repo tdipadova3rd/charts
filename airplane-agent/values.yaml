@@ -107,6 +107,7 @@ airplane:
 
     # AWS settings
     s3BucketName: ""
+    awsTargetGroupARN: ""
 
     # Common settings
     redisHost: ""
