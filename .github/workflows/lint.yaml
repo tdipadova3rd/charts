@@ -36,4 +36,7 @@ jobs:
             --set airplane.storage.enabled=true \
             --set airplane.taskPodSecurityContext.key=value \
             --set airplane.taskSecurityContext.key=value \
-            --set airplane.agentLabels.key1=value1
+            --set airplane.agentLabels.key1=value1 \
+            --set tolerations[0].key=my_toleration_key \
+            --set tolerations[0].operator=Equal \
+            --set tolerations[0].value=my_toleration_value

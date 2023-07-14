@@ -150,6 +150,10 @@ spec:
             - name: AP_AGENT_STORAGE_REDIS_HOST
               value: "{{ .Values.airplane.storage.redisHost }}"
             {{- end }}
+            {{- if .Values.airplane.storage.gcpAppCredentialsSecret.name }}
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: "/etc/gcp_credentials/{{ .Values.airplane.storage.gcpAppCredentialsSecret.key }}"
+            {{- end }}
             {{- if .Values.airplane.extraEnvVars }}
             - name: AP_EXTRA_ENV_VARS
               value: '{{ toJson .Values.airplane.extraEnvVars }}'
@@ -182,15 +186,27 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.airplane.storage.gcpAppCredentialsSecret.name }}
+          volumeMounts:
+            - name: gcp-credentials
+              mountPath: "/etc/gcp_credentials"
+              readOnly: true
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- with .Values.affinity }}
+      {{- if .Values.airplane.storage.gcpAppCredentialsSecret.name }}
+      volumes:
+        - name: gcp-credentials
+          secret:
+            secretName: "{{ .Values.airplane.storage.gcpAppCredentialsSecret.name }}"
+      {{- end }}
+      {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
+      {{- end }}
+      {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}

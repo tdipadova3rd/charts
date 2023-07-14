@@ -99,11 +99,21 @@ airplane:
   # talk to support@airplane.dev before enabling.
   storage:
     enabled: false
+
+    # Set to either gke, eks, or base
     mode: gke
 
     # GCP settings
     gcpIPAddressName: ""
     gcsBucketName: ""
+
+    # Secret for static GCP credentials that will be used to set the
+    # GOOGLE_APPLICATION_CREDENTIALS environment variable. This is only needed if
+    # you're running in a cluster without workload identity
+    # (https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity).
+    gcpAppCredentialsSecret:
+      name: ""
+      key: ""
 
     # AWS settings
     s3BucketName: ""
