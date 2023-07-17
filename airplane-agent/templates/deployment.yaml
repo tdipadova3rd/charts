@@ -140,7 +140,11 @@ spec:
             - name: AP_AGENT_STORAGE_INTERNAL_HOST
               value: "http://airplane-agent-internal.{{ .Release.Namespace }}:2189"
             - name: AP_AGENT_STORAGE_EXTERNAL_URL
+              {{- if .Values.airplane.storage.externalServerURL }}
+              value: "{{ .Values.airplane.storage.externalServerURL }}"
+              {{- else }}
               value: "https://{{ .Values.airplane.storage.zoneSlug }}.{{ .Values.airplane.teamID }}.{{ .Values.airplane.storage.domain }}"
+              {{- end }}
             - name: AP_AGENT_STORAGE_JWT_PUBLIC_KEY
               value: "{{ .Values.airplane.storage.jwtPublicKey }}"
             - name: AP_AGENT_STORAGE_S3_AGENT_STORAGE_BUCKET
