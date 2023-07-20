@@ -93,6 +93,21 @@ airplane:
       cpu: 1000m
       memory: 2Gi
 
+  # Patch to apply to all runner pod specs.
+  #
+  # Example (adding a custom sidecar container):
+  #
+  #   runnerPodSpecPatch:
+  #     containers:
+  #       - name: sidecar
+  #         image: "ubuntu:latest"
+  #         command:
+  #           - /bin/bash
+  #           - "-c"
+  #           - trap "echo exiting; exit 1" SIGHUP SIGINT SIGTERM; while true; do sleep 20; done
+  #
+  runnerPodSpecPatch: {}
+
   # Settings for self-hosted storage (https://docs.airplane.dev/self-hosting/storage).
   #
   # NOTE: Self-hosted storage support for Kubernetes is still experimental. Please
