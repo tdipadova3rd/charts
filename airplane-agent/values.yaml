@@ -134,10 +134,14 @@ airplane:
     s3BucketName: ""
     awsTargetGroupARN: ""
 
+    # Azure settings
+    absAccountName: ""
+    absContainerName: ""
+
     # Common settings
     redisHost: ""
-    zoneName: "Storage GKE test"
-    zoneSlug: "gketest"
+    zoneName: "Kube storage zone"
+    zoneSlug: "kube"
 
     # Advanced settings- these should be left as-is in most cases
     externalServerURL: ""

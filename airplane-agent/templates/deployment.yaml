@@ -151,6 +151,10 @@ spec:
               value: "{{ .Values.airplane.storage.s3BucketName }}"
             - name: AP_AGENT_STORAGE_GCS_AGENT_STORAGE_BUCKET
               value: "{{ .Values.airplane.storage.gcsBucketName }}"
+            - name: AP_AGENT_STORAGE_ABS_ACCOUNT
+              value: "{{ .Values.airplane.storage.absAccountName }}"
+            - name: AP_AGENT_STORAGE_ABS_CONTAINER
+              value: "{{ .Values.airplane.storage.absContainerName }}"
             - name: AP_AGENT_STORAGE_REDIS_HOST
               value: "{{ .Values.airplane.storage.redisHost }}"
             {{- end }}
