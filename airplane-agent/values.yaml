@@ -139,8 +139,12 @@ airplane:
     absContainerName: ""
 
     # Common settings
-    redisHost: ""
     zoneName: "Kube storage zone"
+
+    # Must set either the host (with a port, e.g. "redis:6789") or provide a full URI.
+    # Use the second if TLS and/or authentication is enabled.
+    redisHost: ""
+    redisURI: ""
 
     # Can contain lowercase letters and numbers only (no dashes, underscores,
     # spaces, uppercase letters, etc.).

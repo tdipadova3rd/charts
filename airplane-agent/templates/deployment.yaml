@@ -157,6 +157,8 @@ spec:
               value: "{{ .Values.airplane.storage.absContainerName }}"
             - name: AP_AGENT_STORAGE_REDIS_HOST
               value: "{{ .Values.airplane.storage.redisHost }}"
+            - name: AP_AGENT_STORAGE_REDIS_URI
+              value: "{{ .Values.airplane.storage.redisURI }}"
             {{- end }}
             {{- if .Values.airplane.storage.gcpAppCredentialsSecret.name }}
             - name: GOOGLE_APPLICATION_CREDENTIALS
