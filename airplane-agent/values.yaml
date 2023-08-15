@@ -230,3 +230,7 @@ enableHealthProbes: true
 sentry:
   dsn: ""
   environment: ""
+
+# DNS policy for the agent pods. If unset, will use the default
+# for the cluster.
+dnsPolicy: ""
