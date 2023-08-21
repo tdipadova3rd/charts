@@ -141,10 +141,23 @@ airplane:
     # Common settings
     zoneName: "Kube storage zone"
 
-    # Must set either the host (with a port, e.g. "redis:6789") or provide a full URI.
-    # Use the second if TLS and/or authentication is enabled.
+    # Configuration for connecting from the agent to redis. Must set exactly one of these three.
+    #
+    # (1) Redis host with port (e.g., "1.2.3.4:6379"). The agent will communicate with the redis
+    # without AUTH or TLS.
     redisHost: ""
+    # (2) Full redis connection URI in the format documented in
+    # https://github.com/lettuce-io/lettuce-core/wiki/Redis-URI-and-connection-details#uri-syntax.
+    # This allows for AUTH and/or TLS.
     redisURI: ""
+    # (3) Reference to a secret that contains the full redis URI. Use this to prevent the AUTH
+    # token from being stored in plaintext in the chart values.
+    redisURISecret:
+      name: ""
+      key: ""
+
+    # CA cert in PEM format for Redis TLS. Ignored unless redisURI is also set above.
+    redisCACert: ""
 
     # Can contain lowercase letters and numbers only (no dashes, underscores,
     # spaces, uppercase letters, etc.).

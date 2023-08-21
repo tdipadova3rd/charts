@@ -161,7 +161,20 @@ spec:
             - name: AP_AGENT_STORAGE_REDIS_HOST
               value: "{{ .Values.airplane.storage.redisHost }}"
             - name: AP_AGENT_STORAGE_REDIS_URI
+              {{- if .Values.airplane.storage.redisURI }}
               value: "{{ .Values.airplane.storage.redisURI }}"
+              {{- else if .Values.airplane.storage.redisURISecret.name }}
+              valueFrom:
+                secretKeyRef:
+                  {{- toYaml .Values.airplane.storage.redisURISecret | nindent 18 }}
+              {{- else }}
+              value: ""
+              {{- end }}
+            {{- if .Values.airplane.storage.redisCACert }}
+            - name: AP_AGENT_STORAGE_REDIS_CACERT
+              value: |
+                {{ .Values.airplane.storage.redisCACert | nindent 16 | trim }}
+            {{- end }}
             {{- end }}
             {{- if .Values.airplane.storage.gcpAppCredentialsSecret.name }}
             - name: GOOGLE_APPLICATION_CREDENTIALS
