@@ -168,6 +168,9 @@ airplane:
     domain: "d.airplane.sh"
     jwtPublicKey: ""
 
+    # Experimental features- don't use without talking to support@airplane.dev first.
+    acceptInputs: "false"
+
   # These are for development purposes only. Please don't change them without reaching out
   # to support@airplane.dev first.
   apiHost: https://api.airplane.dev

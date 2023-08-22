@@ -140,6 +140,10 @@ spec:
               value: "{{ .Values.airplane.storage.zoneSlug }}"
             - name: AP_AGENT_STORAGE_ZONE_NAME
               value: "{{ .Values.airplane.storage.zoneName }}"
+            - name: AP_AGENT_STORAGE_ZONE_ACCEPT_INPUTS
+              value: "{{ .Values.airplane.storage.acceptInputs }}"
+            - name: AP_AGENT_STORAGE_ZONE_ENV_SLUG
+              value: "{{ .Values.airplane.envSlug }}"
             - name: AP_AGENT_STORAGE_INTERNAL_HOST
               value: "http://airplane-agent-internal.{{ .Release.Namespace }}:2189"
             - name: AP_AGENT_STORAGE_EXTERNAL_URL
