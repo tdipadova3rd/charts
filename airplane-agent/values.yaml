@@ -177,6 +177,7 @@ airplane:
   temporalHost: temporal-api.airplane.dev:443
   otelCollectorURL: https://otel-collector.airplane.dev
   mtaAgent: false
+  runnerPlatform: ""
   serviceJWTSecret:
     name: ""
     key: ""
