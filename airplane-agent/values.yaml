@@ -83,6 +83,10 @@ airplane:
   # for setting things like HTTP_PROXY.
   extraEnvVars: {}
 
+  # Extra labels and/or annotations to add to all task pods.
+  extraTaskLabels: {}
+  extraTaskAnnotations: {}
+
   # Default CPU and memory requests and limits for task runners spun up by
   # the agent.
   defaultTaskResources:

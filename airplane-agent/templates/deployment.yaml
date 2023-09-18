@@ -63,6 +63,10 @@ spec:
               value: "{{- range $key, $val := .Values.airplane.tolerations }}{{ $key }}={{ $val }};{{- end }}"
             - name: AP_K8S_NODE_SELECTOR
               value: "{{- range $key, $val := .Values.airplane.nodeSelector }}{{ $key }}={{ $val }};{{- end }}"
+            - name: AP_K8S_POD_LABELS
+              value: "{{- range $key, $val := .Values.airplane.extraTaskLabels }}{{ $key }}={{ $val }};{{- end }}"
+            - name: AP_K8S_POD_ANNOTATIONS
+              value:  "{{- range $key, $val := .Values.airplane.extraTaskAnnotations }}{{ $key }}={{ $val }};{{- end }}"
             - name: AP_LABELS
               value: "airplane_installer:helm
                 {{- range $key, $val := .Values.airplane.agentLabels }} {{ $key }}:{{ $val }}
