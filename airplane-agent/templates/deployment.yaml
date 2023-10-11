@@ -135,6 +135,12 @@ spec:
               value: "{{ .Values.airplane.defaultTaskResources.limits.cpu }}"
             - name: AP_K8S_MIN_MEMORY_LIMIT
               value: "{{ .Values.airplane.defaultTaskResources.limits.memory  }}"
+            - name: AP_RUNBROKER_IMAGE
+              value: "{{ .Values.airplane.runbrokerImageOverride }}"
+            - name: AP_TASKD_IMAGE
+              value: "{{ .Values.airplane.taskdImageOverride }}"
+            - name: AP_STDAPI_IMAGE
+              value: "{{ .Values.airplane.stdapiImageOverride }}"
             {{- if .Values.airplane.storage.enabled }}
             - name: AP_AGENT_STORAGE_ENABLED
               value: "true"

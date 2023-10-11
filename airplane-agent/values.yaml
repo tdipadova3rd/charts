@@ -112,6 +112,13 @@ airplane:
   #
   runnerPodSpecPatch: {}
 
+  # Override the Airplane-hosted images that are used in task runners.
+  #
+  # NOTE: This is an advanced feature, please contact Airplane support before using.
+  runbrokerImageOverride: ""
+  taskdImageOverride: ""
+  stdapiImageOverride: ""
+
   # Settings for self-hosted storage (https://docs.airplane.dev/self-hosting/storage).
   #
   # NOTE: Self-hosted storage support for Kubernetes is still experimental. Please
