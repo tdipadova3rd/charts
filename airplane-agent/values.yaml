@@ -132,6 +132,7 @@ airplane:
     # GCP settings
     gcpIPAddressName: ""
     gcsBucketName: ""
+    gcpServiceAccountEmail: ""
 
     # Secret for static GCP credentials that will be used to set the
     # GOOGLE_APPLICATION_CREDENTIALS environment variable. This is only needed if

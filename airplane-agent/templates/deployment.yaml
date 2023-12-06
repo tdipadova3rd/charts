@@ -194,6 +194,10 @@ spec:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/etc/gcp_credentials/{{ .Values.airplane.storage.gcpAppCredentialsSecret.key }}"
             {{- end }}
+            {{- if .Values.airplane.storage.gcpServiceAccountEmail }}
+            - name: AP_SERVICE_ACCOUNT
+              value: "{{ .Values.airplane.storage.gcpServiceAccountEmail }}"
+            {{- end }}
             {{- if .Values.airplane.extraEnvVars }}
             - name: AP_EXTRA_ENV_VARS
               value: '{{ toJson .Values.airplane.extraEnvVars }}'
