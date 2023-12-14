@@ -188,6 +188,13 @@ spec:
             - name: AP_AGENT_STORAGE_REDIS_CACERT
               value: |
                 {{ .Values.airplane.storage.redisCACert | nindent 16 | trim }}
+            {{- else if .Values.airplane.storage.redisCACertSecret.name }}
+            - name: AP_AGENT_STORAGE_REDIS_CACERT
+              valueFrom:
+                secretKeyRef:
+                  {{- toYaml .Values.airplane.storage.redisCACertSecret | nindent 18 }}
+            {{- end }}
+            {{- if .Values.airplane.storage.redisClientCert }}
             {{- end }}
             {{- end }}
             {{- if .Values.airplane.storage.gcpAppCredentialsSecret.name }}

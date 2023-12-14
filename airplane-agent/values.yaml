@@ -171,6 +171,12 @@ airplane:
     # CA cert in PEM format for Redis TLS. Ignored unless redisURI is also set above.
     redisCACert: ""
 
+    # Reference to a secret that contains the CA cert in PEM format for Redis TLS. Ignored unless
+    # redisURI is also set above. If redisCACert is also set, this will be ignored.
+    redisCACertSecret:
+      name: ""
+      key: ""
+
     # Can contain lowercase letters and numbers only (no dashes, underscores,
     # spaces, uppercase letters, etc.).
     zoneSlug: "kube"
